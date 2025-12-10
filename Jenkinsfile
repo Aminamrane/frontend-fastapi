@@ -61,6 +61,7 @@ pipeline {
                     sh """
                         docker build -t ${DOCKER_USERNAME}/${IMAGE_NAME}:${VERSION} .
                         docker tag ${DOCKER_USERNAME}/${IMAGE_NAME}:${VERSION} ${DOCKER_USERNAME}/${IMAGE_NAME}:latest
+                        docker tag ${DOCKER_USERNAME}/${IMAGE_NAME}:${VERSION} ${DOCKER_USERNAME}/${IMAGE_NAME}:dev
                     """
                 }
             }
@@ -70,12 +71,11 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh """
-                            echo ${DOCKER_PASS} | docker login -u ${DOCKER_USER} --password-stdin ${DOCKER_REGISTRY}
-                            
-                            docker push ${DOCKER_USERNAME}/${IMAGE_NAME}:${VERSION}
-                            docker push ${DOCKER_USERNAME}/${IMAGE_NAME}:latest
-                        """
+                        sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
+                        
+                        sh "docker push ${DOCKER_USERNAME}/${IMAGE_NAME}:${VERSION}"
+                        sh "docker push ${DOCKER_USERNAME}/${IMAGE_NAME}:latest"
+                        sh "docker push ${DOCKER_USERNAME}/${IMAGE_NAME}:dev"
                     }
                 }
             }
