@@ -20,40 +20,6 @@ pipeline {
             }
         }
         
-        stage('Install Dependencies') {
-            steps {
-                script {
-                    echo "Installing Node.js dependencies..."
-                    sh '''
-                        npm ci || npm install
-                    '''
-                }
-            }
-        }
-        
-        stage('Tests') {
-            steps {
-                script {
-                    echo "Running unit tests..."
-                    sh '''
-                        # Run tests if they exist (placeholder for now)
-                        npm test || echo "No tests configured yet"
-                    '''
-                }
-            }
-        }
-        
-        stage('Build') {
-            steps {
-                script {
-                    echo "Building Next.js application..."
-                    sh '''
-                        npm run build
-                    '''
-                }
-            }
-        }
-        
         stage('Build Docker Image') {
             steps {
                 script {
