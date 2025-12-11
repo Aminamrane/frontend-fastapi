@@ -3,8 +3,10 @@ import { AuthProvider } from "../context/AuthContext";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <AuthProvider>
-      <Component {...pageProps} />
-    </AuthProvider>
+    <div style={{ backgroundColor: "#2563EB", minHeight: "100vh" }}>
+      <AuthProvider>
+        <Component {...pageProps} />
+      </AuthProvider>
+    </div>
   );
 }
